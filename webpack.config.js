@@ -1,147 +1,69 @@
+/**
+ * Created by hlwen on 2016/12/31.
+ */
+// nodejs 中的path模块
 var path = require('path');
-var webpack = require('webpack');
-var glob = require('glob');
 
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+// 将样式提取到单独的css文件中，而不是打包到js文件或使用style标签插入在head标签中
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
-
-var entries = getEntry();
-var chunks = getChunkName();
-
-var config = {
-  entry: entries,
-  output: {
-    path: path.resolve(__dirname, './dist'),
-    filename: '[name].js',
-    publicPath: '/'
-  },
-  resolve: {
-    //配置别名，在项目中可缩减引用路径
-    extensions: ['.js', '.vue'],
-    alias: {
-      assets: path.join(__dirname,'/app/assets'),
-      components: path.join(__dirname,'/app/components'),
-      root: path.join(__dirname, 'node_modules')
-    }
-  },
-  module: {
-    loaders: [
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader'
-      },
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/
-      },
-      {
-        test: /\.css$/, loader: ExtractTextPlugin.extract({
-          fallbackLoader: 'style-loader',
-          loader: 'css-loader'
-        })
-      },
-      {
-        test: /\.(eot|svg|ttf|woff|woff2)$/,
-        loader: 'file-loader'
-      },
-      {
-        test: /\.(png|jpg|gif|svg)$/,
-        loader: 'file-loader',
-        query: {
-          name: '[name].[ext]?[hash]'
+module.exports = {
+    // 入口文件，path.resolve()方法，可以结合我们给定的两个参数最后生成绝对路径，最终指向的就是我们的index.js文件
+    entry: path.resolve(__dirname, './resources/assets/js/admin.js'),
+    // 输出配置
+    output: {
+        // 输出路径是 myProject/output/static
+        path: path.resolve(__dirname, './public/'),
+        publicPath: './public',
+        filename: 'js/admin.js',
+        // chunkFilename: '[id].[chunkhash].js'
+    },
+    resolve: {
+        extensions: ['', '.js', '.vue'],
+        alias: {
+            'vue$': 'vue/dist/vue.js'
         }
-      }
+    },
+    module: {
+        loaders: [
+            // 使用vue-loader 加载 .vue 结尾的文件
+            {
+                test: /\.vue$/,
+                loader: 'vue'
+            },
+            {
+                test: /\.js$/,
+                loader: 'babel?presets=es2015',
+                exclude: /node_modules/
+            },
+            {
+                test: /\.css$/,
+                loader: 'style!css'
+            },
+            {
+                test: /\.scss$/,
+                loader: 'style!css!sass'
+            }, //字体
+            {
+                test: /\.((ttf|eot|woff|svg)(\?t=[0-9]\.[0-9]\.[0-9]))|(ttf|eot|woff|svg)\??.*$/,
+                loader: 'url?limit=10000&name=fonts/[name].[ext]'
+            },
+            {
+                test: /\.(png|jpe?g|gif)(\?.*)?$/,
+                loader: 'url',
+                query: {
+                    limit: 100,
+                    name: 'img/[name].[ext]?[hash:10]'
+                }
+            },
+            {
+                test: /vux.src.*?js$/,
+                loader: 'babel'
+            }
+        ]
+    },
+    plugins: [
+        // 配置提取出的样式文件
+        // new ExtractTextPlugin('css/admin.css'),
+
     ]
-  },
-  plugins: [
-    new CommonsChunkPlugin({
-      name: 'vendors',
-      filename: 'assets/js/vendors.js',
-      chunks: chunks,
-      minChunks: 1
-    }),
-    new ExtractTextPlugin({
-      filename: 'assets/css/main.css',
-      allChunks: true
-    })
-  ],
-  devServer: {
-    historyApiFallback: false,
-    noInfo: true,
-    // proxy: {
-    //   '/github': {
-    //     target: 'https://github.com/github',
-    //     changeOrigin: true,
-    //     pathRewrite: {'^/github' : ''}
-    //   }
-    // },
-  },
-  devtool: '#eval-source-map'
-};
-
-var pages = getHtmls();
-pages.forEach(function (pathname) {
-  // filename 用文件夹名字
-  var conf = {
-    filename: pathname.substring(6, pathname.length - 4) + '.html', //生成的html存放路径，相对于path
-    template: 'app/' + pathname + '.html', //html模板路径
-  };
-
-  console.log(pathname,conf)
-  if (chunks.indexOf(pathname) > -1) {
-    conf.inject = 'body';
-    conf.chunks = ['vendors', pathname];
-    conf.hash = true;
-  }
-  config.plugins.push(new HtmlWebpackPlugin(conf));
-});
-
-module.exports = config;
-
-function getEntry() {
-  var entry = {};
-  glob.sync('./app/pages/**/*.js').forEach(function (name) {
-    var n = name.slice(name.lastIndexOf('app/') + 10, name.length -3);
-	
-    entry[n] = [name];
-	console.log(name.lastIndexOf('app/'),'getEntry',name,n)
-  });
-  return entry;
-}
-function getChunkName () {
-  var entry = [];
-  glob.sync('./app/pages/**/*.js').forEach(function (name) {
-    var n = name.slice(name.lastIndexOf('app/') + 10, name.length - 3);
-	console.log('getChunkName',name,n)
-    entry.push(n);
-  });
-  return entry;
-}
-function getHtmls() {
-  var entry = [];
-  glob.sync('./app/pages/**/*.html').forEach(function (name) {
-    var n = name.slice(name.lastIndexOf('app/') + 4, name.length - 5);
-	console.log('getHtmls',name,n)
-    entry.push(n);
-  });
-  return entry;
-}
-
-if (process.env.NODE_ENV === 'production') {
-  module.exports.devtool = '#source-map';
-  // http://vue-loader.vuejs.org/en/workflow/production.html
-  module.exports.plugins = (module.exports.plugins || []).concat([
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"production"'
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
-    })
-  ]);
 }

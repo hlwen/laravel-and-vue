@@ -12,6 +12,8 @@ $uri = urldecode(
 );
 
 // This file allows us to emulate Apache's "mod_rewrite" functionality from the
+//php artisan serve --port 8080
+
 // built-in PHP web server. This provides a convenient way to test a Laravel
 // application without having installed a "real" web server software here.
 if ($uri !== '/' && file_exists(__DIR__.'/public'.$uri)) {
