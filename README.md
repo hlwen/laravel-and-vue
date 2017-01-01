@@ -1,40 +1,33 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+###一个基于vuejs2.0和laravel php 后台构建，网页前端应用采用的是laravel的现有构建基本不变，
+###只是在后台管理段实现基于vue2.0的单页面重构
 
-## About Laravel
+##代码下载
+>git clone git@github.com:hlwen/laravel-and-vue.git
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+###开发环境要求有nodejs环境，php开发环境，mysql数据库
+#### nodejs下载：[https://nodejs.org/en/download/](https://nodejs.org/en/download/) 下载完成直接安装，环境变量自动配置
+#### php，mysql集成开发环境下载：[https://www.apachefriends.org/download.html](https://www.apachefriends.org/download.html) 下载完成直接安装，php环境变量要配置，
+#### composer开发环境下载：[http://docs.phpcomposer.com/](http://docs.phpcomposer.com/) 网站有详细教程，
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+#### webpack 环境搭建：[http://www.cnblogs.com/sloong/p/5584684.html](http://www.cnblogs.com/sloong/p/5584684.html)
+>cd laravel-and-vue && composer install && npm install || yarn ||cnpm install
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+###后台管理js代码编译，摒弃了laravel自带的webpack配置，采用自定义形式在根目录的webpack.config.js文件
+####安装webpack
+>npm install -g webpack || cnpm install -g webpack
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+##启动js，css代码编译
+> webpack --config webpack.min.js //另一份配置文件
+> webpack --display-error-details //显示异常信息
+> webpack --watch   //监听变动并自动打包 一般开发是使用
+> webpack -p    //压缩混淆脚本，这个非常非常重要！ 版本发布的时候，也就是生产环境
+> webpack -d    //生成map映射文件，告知哪些模块被最终打包到哪里了
 
-## Contributing
+##php启动
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+>php artisan serve --port 8080
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+##后台管理所有功能都在/admin目录下,数据交互全部采用ajex；
