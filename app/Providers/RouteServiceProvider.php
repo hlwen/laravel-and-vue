@@ -35,8 +35,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
-        $this->mapApiRoutes();
 
+        $this->mapAdminRoutes();
+        $this->mapApiRoutes();
         $this->mapWebRoutes();
 
         //
@@ -74,6 +75,23 @@ class RouteServiceProvider extends ServiceProvider
             'prefix' => 'api',
         ], function ($router) {
             require base_path('routes/api.php');
+        });
+    }
+    /**
+     * 定义管理界面的route
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapAdminRoutes()
+    {
+        Route::group([
+            'middleware' => 'admin',
+            'namespace' => $this->namespace,
+            'prefix' => 'admin',
+        ], function ($router) {
+            require base_path('routes/admin.php');
         });
     }
 }

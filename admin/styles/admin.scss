@@ -1,0 +1,28 @@
+
+body,ul{
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+body{
+  display: flex;
+  font-family:"Helvetica","Comic Sans MS","幼圆","黑体",sans-serif;
+}
+html{
+  height: 100%;
+}
+label{
+  font-weight: inherit !important;
+}
+a,button{
+  outline: none;
+  text-decoration: none;
+}
+li{
+  list-style-type: none;
+}
+.clearfix:after{  /*最简方式*/
+  content: '';
+  display: block;
+  clear: both;
+}

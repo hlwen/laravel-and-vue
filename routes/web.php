@@ -19,8 +19,3 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 Route::any('/upload', 'StudentController@upload');
-
-Route::group(['prefix'=>'admin'],function (){
-    Route::get('/', 'admin\indexController@index');
-    Route::get('/index', 'admin\indexController@login');
-});

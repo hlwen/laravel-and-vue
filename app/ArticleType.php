@@ -4,15 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Article extends Model
+class ArticleType extends Model
 {
-    protected $table = 'articles';
+    protected $table = 'articles_type';
 
     protected $fillable =['name', 'describe', 'ioc', 'parentId'];
 //关闭时间
-    public $timestamps = true;
+    public $timestamps = false;
     public static function getMenu(){
 
         return 'sdf';
     }
+    //
 }

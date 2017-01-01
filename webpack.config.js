@@ -8,7 +8,7 @@ var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
     // 入口文件，path.resolve()方法，可以结合我们给定的两个参数最后生成绝对路径，最终指向的就是我们的index.js文件
-    entry: path.resolve(__dirname, './resources/assets/js/admin.js'),
+    entry: path.resolve(__dirname, './admin/admin.js'),
     // 输出配置
     output: {
         // 输出路径是 myProject/output/static
@@ -20,6 +20,9 @@ module.exports = {
     resolve: {
         extensions: ['', '.js', '.vue'],
         alias: {
+            'conf':path.resolve(__dirname, './admin/assets/conf.js'),
+            'components': path.resolve(__dirname, './admin/components/components.js'),
+            'Lib': path.resolve(__dirname, './admin/assets/Lib.js'),
             'vue$': 'vue/dist/vue.js'
         }
     },
@@ -61,6 +64,7 @@ module.exports = {
             }
         ]
     },
+    devtool: 'source-map',
     plugins: [
         // 配置提取出的样式文件
         // new ExtractTextPlugin('css/admin.css'),
