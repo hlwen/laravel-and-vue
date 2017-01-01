@@ -19,7 +19,7 @@
 ####安装webpack
 >npm install -g webpack || cnpm install -g webpack
 
-##启动js，css代码编译
+##启动js，css代码编译，按自己需要选择命令
 > webpack --config webpack.min.js //另一份配置文件
 > webpack --display-error-details //显示异常信息
 > webpack --watch   //监听变动并自动打包 一般开发是使用
