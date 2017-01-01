@@ -20,10 +20,14 @@
 >npm install -g webpack || cnpm install -g webpack
 
 ##启动js，css代码编译，按自己需要选择命令
-> webpack --config webpack.min.js //另一份配置文件n\
+> webpack --config webpack.min.js //另一份配置文件
+
 > webpack --display-error-details //显示异常信息
+
 > webpack --watch   //监听变动并自动打包 一般开发是使用
+
 > webpack -p    //压缩混淆脚本，这个非常非常重要！ 版本发布的时候，也就是生产环境
+
 > webpack -d    //生成map映射文件，告知哪些模块被最终打包到哪里了
 
 ##php启动
